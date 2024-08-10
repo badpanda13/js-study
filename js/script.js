@@ -375,11 +375,25 @@ for(let i = 0; i < slides.length ; i++){
     dots.push(dot);
 }
 
+function deleteNotDigits(str){
+    return +str.replace(/\D/g,'');
+}
+function sliderChaging(){
+    if(slides.length < 10) {
+        current.textContent = `0${slideIndex}`;
+    } else {
+        current.textContent = slideIndex;
+    }
+
+    dots.forEach(dot => dot.style.opacity = '0.5');
+    dots[slideIndex - 1].style.opacity = 1;
+}
+
 next.addEventListener('click', () => {
-    if(offset == +width.replace(/\D/g,'') * (slides.length - 1)){
+    if(offset == deleteNotDigits(width) * (slides.length - 1)){
         offset = 0;
     } else {
-        offset += +width.replace(/\D/g,'');
+        offset += deleteNotDigits(width);
     }
     slidesField.style.transform = `translateX(-${offset}px`;
 
@@ -389,21 +403,14 @@ next.addEventListener('click', () => {
         slideIndex++;
     }
 
-    if(slides.length < 10) {
-        current.textContent = `0${slideIndex}`;
-    } else {
-        current.textContent = slideIndex;
-    }
-
-    dots.forEach(dot => dot.style.opacity = '0.5');
-    dots[slideIndex - 1].style.opacity = 1;
+    sliderChaging();
 });
 
 prev.addEventListener('click', () => {
     if(offset == 0){
-        offset = +width.replace(/\D/g,'') * (slides.length - 1);
+        offset = deleteNotDigits(width) * (slides.length - 1);
     } else {
-        offset -= +width.replace(/\D/g,'');
+        offset -= deleteNotDigits(width);
     }
     slidesField.style.transform = `translateX(-${offset}px`;
 
@@ -413,13 +420,7 @@ prev.addEventListener('click', () => {
         slideIndex--;
     }
 
-    if(slides.length < 10) {
-        current.textContent = `0${slideIndex}`;
-    } else {
-        current.textContent = slideIndex;
-    }
-    dots.forEach(dot => dot.style.opacity = '0.5');
-    dots[slideIndex - 1].style.opacity = 1;
+    sliderChaging();
 
 });
 
@@ -431,13 +432,7 @@ dots.forEach(dot => {
         offset= +width.slice(0,width.length-2) * (slideTo - 1);
         slidesField.style.transform = `translateX(-${offset}px`;
     
-        if(slides.length < 10) {
-            current.textContent = `0${slideIndex}`;
-        } else {
-            current.textContent = slideIndex;
-        }
-        dots.forEach(dot => dot.style.opacity = '0.5');
-        dots[slideIndex - 1].style.opacity = 1;
+        sliderChaging();
     });
 //});
 });
